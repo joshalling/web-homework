@@ -2,6 +2,7 @@ defmodule HomeworkWeb.Router do
   use HomeworkWeb, :router
 
   pipeline :api do
+    plug(CORSPlug, origin: "http://localhost:3000")
     plug(:accepts, ["json"])
   end
 
@@ -13,5 +14,8 @@ defmodule HomeworkWeb.Router do
       interface: :simple,
       context: %{pubsub: HomeworkWeb.Endpoint}
     )
+
+    forward("/graphql", Absinthe.Plug,
+      schema: HomeworkWeb.Schema)
   end
 end
