@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect, Switch } from 'react-router-dom'
 import { css } from '@emotion/core'
 import { Home } from './home'
 
@@ -18,8 +18,11 @@ function AppRouter () {
           </ul>
         </nav>
         <div className='main-content' css={contentStyle}>
-          <Route component={Home} exact path='/' />
-          <Route component={() => (<div>Content for /another route</div>)} exact path='/another' />
+          <Switch>
+            <Route component={Home} path='/transactions' />
+            <Route component={() => (<div>Content for /another route</div>)} path='/another' />
+            <Redirect to='/transactions' />
+          </Switch>
         </div>
       </div>
     </Router>
@@ -34,7 +37,7 @@ const layoutStyle = css`
     padding: 8px;
 `
 
-const navStyle = css`
+export const navStyle = css`
   grid-row: 1;
 
   & > ul {
