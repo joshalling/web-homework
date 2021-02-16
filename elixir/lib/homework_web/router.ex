@@ -16,6 +16,8 @@ defmodule HomeworkWeb.Router do
     )
 
     forward("/graphql", Absinthe.Plug,
-      schema: HomeworkWeb.Schema)
+      schema: HomeworkWeb.Schema,
+      socket: HomeworkWeb.UserSocket
+    )
   end
 end

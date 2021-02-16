@@ -12,11 +12,12 @@ defmodule Homework.Application do
       # Start the Telemetry supervisor
       HomeworkWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Homework.PubSub},
+      {Phoenix.PubSub, [name: Homework.PubSub, adapter: Phoenix.PubSub.PG2]},
       # Start the Endpoint (http/https)
-      HomeworkWeb.Endpoint
+      HomeworkWeb.Endpoint,
       # Start a worker by calling: Homework.Worker.start_link(arg)
       # {Homework.Worker, arg}
+      {Absinthe.Subscription, HomeworkWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

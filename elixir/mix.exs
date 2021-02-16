@@ -33,8 +33,9 @@ defmodule Homework.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:absinthe, "~> 1.4"},
-      {:absinthe_plug, "~> 1.4"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},
       {:gettext, "~> 0.11"},

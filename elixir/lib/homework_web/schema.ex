@@ -31,4 +31,19 @@ defmodule HomeworkWeb.Schema do
     import_fields(:user_mutations)
     import_fields(:merchant_mutations)
   end
+
+  subscription do
+    field :transaction_created, :transaction do
+
+      config(fn _args, _ ->
+        {:ok, topic: "transactions"}
+      end)
+
+      trigger(:create_transaction,
+        topic: fn _transaction ->
+          "transactions"
+        end
+      )
+    end
+  end
 end
