@@ -59,12 +59,14 @@ function TxForm (props) {
       <div>
         <label css={labelStyle} htmlFor='tx-user'>User:</label>
         <select id='tx-user' name='userId' onBlur={onChange} onChange={onChange} value={formState.userId}>
+          <option disabled value=''>Select a user</option>
           {users.map(user => <option key={user.id} value={user.id}>{user.firstName} {user.lastName}</option>)}
         </select>
       </div>
       <div>
         <label css={labelStyle} htmlFor='tx-merchant'>Merchant:</label>
         <select id='tx-merchant' name='merchantId' onBlur={onChange} onChange={onChange} value={formState.merchantId} >
+          <option disabled value=''>Select a merchant</option>
           {merchants.map(merchant => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
         </select>
       </div>
