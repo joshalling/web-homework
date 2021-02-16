@@ -7,6 +7,7 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import CreateTx from '../components/transactions/CreateTx'
 import { txTableTransaction } from '../gql/fragments'
 import useTxSubscriptions from '../hooks/transactions/useTxSubscriptions'
+import TxCharts from '../components/transactions/TxCharts'
 
 const TRANSACTIONS_QUERY = gql`
   query Transactions {
@@ -59,10 +60,16 @@ export function Home (props) {
           <li>
             <NavLink activeStyle={{ color: 'red' }} as='button' to={`${url}/new`}>New Transaction</NavLink>
           </li>
+          <li>
+            <NavLink activeStyle={{ color: 'red' }} as='button' to={`${url}/charts`}>Charts</NavLink>
+          </li>
         </ul>
       </nav>
       <Switch>
         <Route component={CreateTx} path={`${path}/new`} />
+        <Route path={`${path}/charts`}>
+          <TxCharts data={data.transactions} />
+        </Route>
         <Route exact path={path}>
           <TxTable data={data.transactions} />
         </Route>
