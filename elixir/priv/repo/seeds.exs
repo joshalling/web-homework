@@ -22,7 +22,7 @@ Enum.each(1..10, fn i ->
   user_id = Enum.random([user_1, user_2]).id
   merchant_id = Enum.random([merchant_1, merchant_2, merchant_3]).id
   Homework.Repo.insert!(%Homework.Transactions.Transaction{
-    amount: Enum.random(500..10000),
+    amount: Enum.random(500..5000),
     credit: credit,
     debit: !credit,
     description: "Transaction Number #{i}",

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { TxTable } from '../components/transactions/TxTable'
 import { css } from '@emotion/core'
@@ -27,6 +27,7 @@ Home.propTypes = {
 
 export function Home (props) {
   const { match: { path, url } } = props
+  const [isRoman, setIsRoman] = useState(false)
   const { loading, error, data = {}, subscribeToMore } = useQuery(TRANSACTIONS_QUERY)
   useTxSubscriptions(subscribeToMore)
 
@@ -50,9 +51,14 @@ export function Home (props) {
 
   return (
     <div css={containerStyle}>
-      <h2>Transactions</h2>
+      <div css={headerStyle}>
+        <h2>Transactions</h2>
+        <div>
+          <label htmlFor='roman-numeral'>Roman Numeral in Cents</label>
+          <input checked={isRoman} id='roman-numeral' onChange={e => setIsRoman(e.target.checked)} type='checkbox' />
+        </div>
+      </div>
       <nav>
-
         <ul css={navListStyle}>
           <li>
             <NavLink activeStyle={{ color: 'red' }} as='button' isActive={checkActive} to={`${url}`}>Transactions</NavLink>
@@ -71,7 +77,7 @@ export function Home (props) {
           <TxCharts data={data.transactions} />
         </Route>
         <Route exact path={path}>
-          <TxTable data={data.transactions} />
+          <TxTable data={data.transactions} isRoman={isRoman} />
         </Route>
       </Switch>
     </div>
@@ -79,8 +85,13 @@ export function Home (props) {
 }
 
 const containerStyle = css`
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
+`
+const headerStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 const navListStyle = css`
   display: flex;

@@ -1,6 +1,7 @@
 import React from 'react'
 import { arrayOf, string, bool, number, shape } from 'prop-types'
 import { css } from '@emotion/core'
+import { convertToRomanNumeral } from './txUtil'
 
 const styles = css`
  .header {
@@ -14,7 +15,8 @@ const styles = css`
 
 const makeDataTestId = (transactionId, fieldName) => `transaction-${transactionId}-${fieldName}`
 
-export function TxTable ({ data }) {
+export function TxTable (props) {
+  const { data, isRoman } = props
   return (
     <table css={styles}>
       <tbody>
@@ -30,6 +32,7 @@ export function TxTable ({ data }) {
         {
           data.map(tx => {
             const { id, user: { firstName, lastName }, description, merchant: { name: merchantName }, debit, credit, amount } = tx
+            const formatedAmount = isRoman ? convertToRomanNumeral(amount) : `$${(amount / 100).toFixed(2)}`
             return (
               <tr data-testid={`transaction-${id}`} key={`transaction-${id}`}>
                 <td data-testid={makeDataTestId(id, 'id')}>{id}</td>
@@ -38,7 +41,7 @@ export function TxTable ({ data }) {
                 <td data-testid={makeDataTestId(id, 'merchant')}>{merchantName}</td>
                 <td data-testid={makeDataTestId(id, 'debit')}>{debit && 'X'}</td>
                 <td data-testid={makeDataTestId(id, 'credit')}>{credit && 'X'}</td>
-                <td data-testid={makeDataTestId(id, 'amount')}>{`$${(amount / 100).toFixed(2)}`}</td>
+                <td data-testid={makeDataTestId(id, 'amount')}>{formatedAmount}</td>
               </tr>
             )
           })
@@ -50,6 +53,7 @@ export function TxTable ({ data }) {
 }
 
 TxTable.propTypes = {
+  isRoman: bool,
   data: arrayOf(shape({
     id: string,
     user: shape({

@@ -13,7 +13,7 @@ const transaction1 = {
 }
 
 const transaction2 = {
-  amount: 7462,
+  amount: 3462,
   credit: true,
   debit: false,
   description: 'Transaction Number 1',
@@ -65,5 +65,11 @@ describe('Transactions Table', () => {
     render(<TxTable data={[transaction1]} />)
 
     screen.getByText('$58.90')
+  })
+
+  it('should show the amount in roman numerals if isRoman is true', () => {
+    render(<TxTable data={[transaction2]} isRoman />)
+
+    screen.getByText('MMMCDLXII')
   })
 })

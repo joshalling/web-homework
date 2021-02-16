@@ -1,6 +1,6 @@
-import { getMerchantBarChartData, getUserBarChartData } from './txUtil'
+import { convertToRomanNumeral, getMerchantBarChartData, getUserBarChartData } from './txUtil'
 
-describe('getBarChartData', () => {
+describe('getUserBarChartData', () => {
   it('should format transaction data for use in user chart', () => {
     const data = [
       { user: { id: '1', firstName: 'John', lastName: 'Doe' }, amount: 200 },
@@ -18,6 +18,9 @@ describe('getBarChartData', () => {
 
     expect(result).toEqual(expected)
   })
+})
+
+describe('getMerchantBarChartData', () => {
   it('should format transaction data for use in merchant chart', () => {
     const data = [
       { merchant: { id: '1', name: 'Merchant 1' }, amount: 200 },
@@ -35,5 +38,14 @@ describe('getBarChartData', () => {
     const result = getMerchantBarChartData(data)
 
     expect(result).toEqual(expected)
+  })
+})
+
+describe('convertToRomanNumeral', () => {
+  it('should convert to roman numerals', () => {
+    expect(convertToRomanNumeral(122)).toBe('CXXII')
+  })
+  it('should convert 9\'s and 4\'s to roman numerals', () => {
+    expect(convertToRomanNumeral(944)).toBe('CMXLIV')
   })
 })
