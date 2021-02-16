@@ -1,10 +1,10 @@
 import React from 'react'
 import { MockedProvider } from '@apollo/client/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
-import CreateTx, { CREATE_TX_MUTATION } from './CreateTx'
+import CreateTx, { CREATE_TX_MUTATION, MERCHANTS_QUERY, USERS_QUERY } from './CreateTx'
 import { MemoryRouter } from 'react-router-dom'
 
-const mock = {
+const createTxMock = {
   request: {
     query: CREATE_TX_MUTATION,
     variables: {
@@ -31,6 +31,32 @@ const mock = {
   }))
 }
 
+const userMock = {
+  request: {
+    query: USERS_QUERY
+  },
+  result: {
+    data: {
+      users: [
+        { id: '97e02774-c717-475d-99da-d00a4b4fec4f', firstName: 'John', lastName: 'Doe' }
+      ]
+    }
+  }
+}
+
+const merchantMock = {
+  request: {
+    query: MERCHANTS_QUERY
+  },
+  result: {
+    data: {
+      users: [
+        { id: '156060b0-5910-4e14-a5c8-45be271cc0c4', name: 'Merchant 1' }
+      ]
+    }
+  }
+}
+
 describe('Create Transaction', () => {
   it('should call createTransaction when submit is clicked', async () => {
     const initialState = {
@@ -46,7 +72,7 @@ describe('Create Transaction', () => {
 
     render(
       <MemoryRouter>
-        <MockedProvider mocks={[mock]}>
+        <MockedProvider mocks={[createTxMock, merchantMock, userMock]}>
           <CreateTx />
         </MockedProvider>
       </MemoryRouter>
@@ -55,14 +81,14 @@ describe('Create Transaction', () => {
     const submitBtn = screen.getByDisplayValue('Submit')
     fireEvent.click(submitBtn)
 
-    expect(mock.newData).toHaveBeenCalled()
+    expect(createTxMock.newData).toHaveBeenCalled()
 
     useStateSpy.mockRestore()
   })
 
   it('should update state when inputs are changed', async () => {
     render(
-      <MockedProvider mocks={[mock]}>
+      <MockedProvider mocks={[createTxMock, merchantMock, userMock]}>
         <MemoryRouter>
           <CreateTx />
         </MemoryRouter>

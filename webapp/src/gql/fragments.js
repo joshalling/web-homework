@@ -11,3 +11,18 @@ export const txTableTransaction = gql`
     amount
   }
 `
+
+export const userOptionUser = gql`
+  fragment UserOptionUser on User {
+    id
+    firstName
+    lastName
+  }
+`
+
+export const merchantOptionMerchant = gql`
+  fragment MerchantOptionMerchant on Merchant {
+    id
+    name
+  }
+`

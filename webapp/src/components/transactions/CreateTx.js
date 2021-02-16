@@ -1,7 +1,7 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import React from 'react'
-import { txTableTransaction } from '../../gql/fragments'
+import { merchantOptionMerchant, txTableTransaction, userOptionUser } from '../../gql/fragments'
 import TxForm from './TxForm'
 
 export const CREATE_TX_MUTATION = gql`
@@ -26,6 +26,24 @@ export const CREATE_TX_MUTATION = gql`
   ${txTableTransaction}
 `
 
+export const USERS_QUERY = gql`
+  query Users {
+    users {
+      ...UserOptionUser
+    }
+  }
+  ${userOptionUser}
+`
+
+export const MERCHANTS_QUERY = gql`
+  query Merchants {
+    merchants {
+      ...MerchantOptionMerchant
+    }
+  }
+  ${merchantOptionMerchant}
+`
+
 const initialState = {
   amount: '',
   type: '',
@@ -36,6 +54,8 @@ const initialState = {
 
 function CreateTx (props) {
   const [formState, setFormState] = React.useState(initialState)
+  const { data: { users } = {} } = useQuery(USERS_QUERY)
+  const { data: { merchants } = {} } = useQuery(MERCHANTS_QUERY)
   const [saveTransaction, { loading }] = useMutation(CREATE_TX_MUTATION, { onCompleted: () => setFormState(initialState) })
 
   const handleSubmit = (e) => {
@@ -60,7 +80,14 @@ function CreateTx (props) {
   }
 
   return (
-    <TxForm formState={formState} handleChange={handleChange} handleSubmit={handleSubmit} loading={loading} />
+    <TxForm
+      formState={formState}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      loading={loading}
+      merchants={merchants}
+      users={users}
+    />
   )
 }
 

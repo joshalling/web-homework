@@ -12,11 +12,27 @@ TxForm.propTypes = {
     merchantId: PropTypes.string
   }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  merchants: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string
+  })),
+  users: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string
+  }))
+}
+
+TxForm.defaultProps = {
+  loading: false,
+  merchants: [],
+  users: []
 }
 
 function TxForm (props) {
-  const { formState, handleSubmit, handleChange } = props
+  const { formState, handleSubmit, handleChange, loading, merchants, users } = props
 
   const onChange = e => {
     const { name, value } = e.target
@@ -42,14 +58,18 @@ function TxForm (props) {
       </div>
       <div>
         <label css={labelStyle} htmlFor='tx-user'>User:</label>
-        <input id='tx-user' name='userId' onChange={onChange} type='text' value={formState.userId} />
+        <select id='tx-user' name='userId' onBlur={onChange} onChange={onChange} value={formState.userId}>
+          {users.map(user => <option key={user.id} value={user.id}>{user.firstName} {user.lastName}</option>)}
+        </select>
       </div>
       <div>
         <label css={labelStyle} htmlFor='tx-merchant'>Merchant:</label>
-        <input id='tx-merchant' name='merchantId' onChange={onChange} type='text' value={formState.merchantId} />
+        <select id='tx-merchant' name='merchantId' onBlur={onChange} onChange={onChange} value={formState.merchantId} >
+          {merchants.map(merchant => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
+        </select>
       </div>
       <div>
-        <input type='submit' value='Submit' />
+        <input disabled={loading} type='submit' value='Submit' />
       </div>
     </form>
   )
