@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import uniqBy from 'lodash.uniqby'
 import React from 'react'
 import { txTableTransaction } from '../../gql/fragments'
 
@@ -18,7 +19,7 @@ const useTxSubscriptions = (subscribeToMore) => {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const newTransaction = subscriptionData.data.transactionCreated
-        return { transactions: [...prev.transactions, newTransaction] }
+        return { transactions: uniqBy([...prev.transactions, newTransaction], 'id') }
       }
     })
   }, [subscribeToMore])

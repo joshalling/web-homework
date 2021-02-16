@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import React from 'react'
+import uniqBy from 'lodash.uniqby'
 import { merchantOptionMerchant, txTableTransaction, userOptionUser } from '../../gql/fragments'
 import TxForm from './TxForm'
 
@@ -67,7 +68,7 @@ function CreateTx (props) {
         cache.modify({
           fields: {
             transactions (existing) {
-              return [...existing, { __ref: cache.identify(data.createTransaction) }]
+              return uniqBy([...existing, { __ref: cache.identify(data.createTransaction) }], '__ref')
             }
           }
         })
