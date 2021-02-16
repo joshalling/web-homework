@@ -6,7 +6,7 @@
     "build": "webpack -d",
     "reset": "rm -rf node_modules 2> /dev/null && yarn boot",
     "start": "webpack-dev-server -d --hot",
-    "test": "jest --coverage"
+    "test": "jest --coverage --env=jsdom-fifteen"
   },
   "resolutions": {
     "elliptic": " 6.5.3",
@@ -139,6 +139,7 @@
     "jest-chain": "1.1.2",
     "jest-dom": "3.5.0",
     "jest-emotion": "10.0.32",
+    "jest-environment-jsdom-fifteen": "^1.0.2",
     "jest-expect-message": "1.0.2",
     "jest-fetch-mock": "2.1.2",
     "jest-json-schema": "2.0.2",
