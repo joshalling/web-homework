@@ -1,5 +1,9 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Observable } from '@apollo/client'
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Observable, split } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
+import { getMainDefinition } from '@apollo/client/utilities'
+import * as AbsintheSocket from '@absinthe/socket'
+import createAbsintheSocketLink from './create-absinthe-socket-link'
+import { Socket as PhoenixSocket } from 'phoenix'
 
 const SERVER_URL = 'http://localhost:8000/graphql'
 
@@ -31,6 +35,27 @@ const requestLink = new ApolloLink(
     })
 )
 
+const httpLink = new HttpLink({
+  uri: SERVER_URL
+})
+
+const phoenixSocket = new PhoenixSocket('ws://localhost:8000/socket')
+
+const absintheSocket = AbsintheSocket.create(phoenixSocket)
+const socketLink = createAbsintheSocketLink(absintheSocket)
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  socketLink,
+  httpLink
+)
+
 export const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
@@ -42,9 +67,7 @@ export const client = new ApolloClient({
       }
     }),
     requestLink,
-    new HttpLink({
-      uri: SERVER_URL
-    })
+    splitLink
   ]),
   cache
 })

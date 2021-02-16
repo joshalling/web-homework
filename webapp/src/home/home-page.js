@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { NavLink, Route, Switch } from 'react-router-dom'
 import CreateTx from '../components/transactions/CreateTx'
 import { txTableTransaction } from '../gql/fragments'
+import useTxSubscriptions from '../hooks/transactions/useTxSubscriptions'
 
 const TRANSACTIONS_QUERY = gql`
   query Transactions {
@@ -25,7 +26,9 @@ Home.propTypes = {
 
 export function Home (props) {
   const { match: { path, url } } = props
-  const { loading, error, data = {} } = useQuery(TRANSACTIONS_QUERY)
+  const { loading, error, data = {}, subscribeToMore } = useQuery(TRANSACTIONS_QUERY)
+  useTxSubscriptions(subscribeToMore)
+
   const checkActive = (match, { pathname }) => pathname === '/transactions'
 
   if (loading) {
