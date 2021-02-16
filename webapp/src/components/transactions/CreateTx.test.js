@@ -24,8 +24,8 @@ const createTxMock = {
         credit: true,
         debit: false,
         description: 'Transaction Number 1',
-        merchantId: '156060b0-5910-4e14-a5c8-45be271cc0c4',
-        userId: '97e02774-c717-475d-99da-d00a4b4fec4f'
+        merchant: { id: '156060b0-5910-4e14-a5c8-45be271cc0c4', name: 'Merchant 1' },
+        userId: { id: '97e02774-c717-475d-99da-d00a4b4fec4f', firstName: 'John', lastName: 'Doe' }
       }
     }
   }))

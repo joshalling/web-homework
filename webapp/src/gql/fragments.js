@@ -1,17 +1,5 @@
 import gql from 'graphql-tag'
 
-export const txTableTransaction = gql`
-  fragment TxTableTransaction on Transaction {
-    id
-    user_id
-    description
-    merchant_id
-    debit
-    credit
-    amount
-  }
-`
-
 export const userOptionUser = gql`
   fragment UserOptionUser on User {
     id
@@ -25,4 +13,22 @@ export const merchantOptionMerchant = gql`
     id
     name
   }
+`
+
+export const txTableTransaction = gql`
+  fragment TxTableTransaction on Transaction {
+    id
+    user {
+      ...UserOptionUser
+    }
+    description
+    merchant {
+      ...MerchantOptionMerchant
+    }
+    debit
+    credit
+    amount
+  }
+  ${userOptionUser}
+  ${merchantOptionMerchant}
 `

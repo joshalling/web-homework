@@ -6,6 +6,10 @@ const styles = css`
  .header {
    font-weight: bold;
  }
+
+ td {
+   padding: 4px 8px;
+ }
 `
 
 const makeDataTestId = (transactionId, fieldName) => `transaction-${transactionId}-${fieldName}`
@@ -16,22 +20,22 @@ export function TxTable ({ data }) {
       <tbody>
         <tr className='header'>
           <td >ID</td>
-          <td >User ID</td>
+          <td >User</td>
           <td >Description</td>
-          <td >Merchant ID</td>
+          <td >Merchant</td>
           <td >Debit</td>
           <td >Credit</td>
           <td >Amount</td>
         </tr>
         {
           data.map(tx => {
-            const { id, user_id: userId, description, merchant_id: merchantId, debit, credit, amount } = tx
+            const { id, user: { firstName, lastName }, description, merchant: { name: merchantName }, debit, credit, amount } = tx
             return (
               <tr data-testid={`transaction-${id}`} key={`transaction-${id}`}>
                 <td data-testid={makeDataTestId(id, 'id')}>{id}</td>
-                <td data-testid={makeDataTestId(id, 'userId')}>{userId}</td>
+                <td data-testid={makeDataTestId(id, 'userId')}>{firstName} {lastName}</td>
                 <td data-testid={makeDataTestId(id, 'description')}>{description}</td>
-                <td data-testid={makeDataTestId(id, 'merchant')}>{merchantId}</td>
+                <td data-testid={makeDataTestId(id, 'merchant')}>{merchantName}</td>
                 <td data-testid={makeDataTestId(id, 'debit')}>{debit && 'X'}</td>
                 <td data-testid={makeDataTestId(id, 'credit')}>{credit && 'X'}</td>
                 <td data-testid={makeDataTestId(id, 'amount')}>{`$${(amount / 100).toFixed(2)}`}</td>
@@ -48,9 +52,16 @@ export function TxTable ({ data }) {
 TxTable.propTypes = {
   data: arrayOf(shape({
     id: string,
-    user_id: string,
+    user: shape({
+      id: string,
+      firstName: string,
+      lastName: string
+    }),
     description: string,
-    merchant_id: string,
+    merchant: shape({
+      id: string,
+      name: string
+    }),
     debit: bool,
     credit: bool,
     amount: number

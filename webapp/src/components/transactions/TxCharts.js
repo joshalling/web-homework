@@ -1,6 +1,6 @@
 import React from 'react'
 import { arrayOf, string, bool, number, shape } from 'prop-types'
-import { getBarChartData } from './txUtil'
+import { getMerchantBarChartData, getUserBarChartData } from './txUtil'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts'
@@ -8,9 +8,16 @@ import {
 TxCharts.propTypes = {
   data: arrayOf(shape({
     id: string,
-    user_id: string,
+    user: shape({
+      id: string,
+      firstName: string,
+      lastName: string
+    }),
     description: string,
-    merchant_id: string,
+    merchant: shape({
+      id: string,
+      name: string
+    }),
     debit: bool,
     credit: bool,
     amount: number
@@ -19,8 +26,8 @@ TxCharts.propTypes = {
 
 function TxCharts (props) {
   const { data } = props
-  const userData = getBarChartData('user_id', data)
-  const MerchantData = getBarChartData('merchant_id', data)
+  const userData = getUserBarChartData(data)
+  const MerchantData = getMerchantBarChartData(data)
   return (
     <div>
       <h3>User Amounts</h3>

@@ -5,18 +5,34 @@ import TxCharts from './TxCharts'
 describe('Transaction Charts', () => {
   it('should show the correct labels', async () => {
     const data = [
-      { merchant_id: 'merchant-1', user_id: 'user-1', amount: 200 },
-      { merchant_id: 'merchant-2', user_id: 'user-2', amount: 700 },
-      { merchant_id: 'merchant-1', user_id: 'user-1', amount: 100 },
-      { merchant_id: 'merchant-3', user_id: 'user-1', amount: 500 }
+      {
+        merchant: { id: '1', name: 'Merchant 1' },
+        user: { id: '1', firstName: 'John', lastName: 'Doe' },
+        amount: 200
+      },
+      {
+        merchant: { id: '2', name: 'Merchant 2' },
+        user: { id: '2', firstName: 'Jane', lastName: 'Doe' },
+        amount: 700
+      },
+      {
+        merchant: { id: '1', name: 'Merchant 1' },
+        user: { id: '1', firstName: 'John', lastName: 'Doe' },
+        amount: 100
+      },
+      {
+        merchant: { id: '3', name: 'Merchant 3' },
+        user: { id: '1', firstName: 'John', lastName: 'Doe' },
+        amount: 500
+      }
     ]
 
     render(<TxCharts data={data} />)
 
-    screen.getAllByText('user-1')
-    screen.getAllByText('user-2')
-    screen.getAllByText('merchant-1')
-    screen.getAllByText('merchant-2')
-    screen.getAllByText('merchant-3')
+    screen.getAllByText('John Doe')
+    screen.getAllByText('Jane Doe')
+    screen.getAllByText('Merchant 1')
+    screen.getAllByText('Merchant 2')
+    screen.getAllByText('Merchant 3')
   })
 })
